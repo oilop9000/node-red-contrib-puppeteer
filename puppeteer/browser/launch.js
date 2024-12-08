@@ -8,7 +8,8 @@ module.exports = function (RED) {
     nodeConfig.ignoreHTTPSErrors = true; // Setting the node's ignoreHttpsErrors property
     var node = this; // Referencing the current node
     puppeteer.use(stealth()); // TO-DO: Make optional. Use stealth.
-
+    var args = [`--remote-debugging-port=${nodeConfig.debugport}`,`--proxy-server=socks5://127.0.0.1:1080`];
+ 
     this.on("input", async function (msg, send, done) {
       try {
         node.status({ fill: "blue", shape: "dot", text: "Launching..." });
@@ -40,7 +41,7 @@ module.exports = function (RED) {
             msg.puppeteer = {
               browser: await puppeteer.launch({
                 ...nodeConfig,
-                args: [`--remote-debugging-port=${nodeConfig.debugport}`],
+                args,
               }),
             };
             // Browser launched sucessfully
@@ -54,7 +55,7 @@ module.exports = function (RED) {
           msg.puppeteer = {
             browser: await puppeteer.launch({
               ...nodeConfig,
-              args: [`--remote-debugging-port=${nodeConfig.debugport}`],
+              args,
             }),
           };
           // Browser launched sucessfully

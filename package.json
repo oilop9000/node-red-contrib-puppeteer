@@ -55,7 +55,8 @@
       "puppeteer-page-get-value": "puppeteer/page/get.js",
       "puppeteer-page-set-value": "puppeteer/page/set.js",
       "puppeteer-page-upload": "puppeteer/page/upload.js",
-      "puppeteer-rename": "puppeteer/page/rename.js"
+      "puppeteer-rename": "puppeteer/page/rename.js",
+      "puppeteer-page-httpauth": "puppeteer/page/auth.js"
     }
   }
 }

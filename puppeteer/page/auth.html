@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    RED.nodes.registerType("puppeteer-page-httpauth", {
+      category: "Puppeteer",
+      color: "#b194f9",
+      defaults: {
+        user: { value: "", required: true },
+        password: { value: "", required: true },
+      },
+      inputs: 1,
+      outputs: 1,
+      icon: "auth.svg",
+      label: function () {
+        let label = this.name == "" ? "Basic Http Auth" : this.name;
+        return label || "Basic Http Auth";
+      },
+      paletteLabel: "Basic Http Auth",
+    });
+  </script>
+  
+  <script type="text/x-red" data-template-name="puppeteer-page-httpauth">
+    <div class="form-row">
+        <label for="node-input-user"><i class="fa fa-user"></i> User</label>
+        <input type="text" id="node-input-user" style="width:70%;" placeholder="User name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
+        <input type="password" id="node-input-password" style="width:70%;" placeholder="User password" />
+    </div>
+    <div class="form-tips">
+      <span data-i18n="[html]tip1">
+        This node adds authentication to the (<code>msg.puppeteer.page</code>) object, using the configured user and password on this node. You have to use it before a url node.
+      </span>
+    </div>
+  </script>
+  
+  <script type="text/x-red" data-help-name="puppeteer-page-httpauth">
+    <p>Adds authentication to the (<code>msg.puppeteer.page</code>) object, using the configured user and password on this node.</p>
+    <h3>Details</h3>
+    <p>This node adds authentication to the (<code>msg.puppeteer.page</code>) object, using the configured user and password on this node.</p>
+  </script>
+  
