@@ -1,3 +1,4 @@
+const puppetHelpers = require("../../lib/helpers");
 module.exports = function (RED) {
   function PuppeteerPageWaitFor(config) {
     RED.nodes.createNode(this, config);
@@ -6,17 +7,7 @@ module.exports = function (RED) {
     this.on("input", async function (msg, send, done) {
       try {
         // Parsing the selector from string input or from msg object
-        let selector =
-          config.selectortype != "str"
-            ? eval(config.selectortype + "." + config.selector)
-            : config.selector;
-        // If the type of selector is set to flow or global, it needs to be parsed differently
-        if (config.selectortype == "flow" || config.selectortype == "global") {
-          // Parsing the selector
-          selector = this.context()[config.selectortype].get(
-            config.selectortype
-          );
-        }
+        let selector = puppetHelpers.getNoderedSelector(config)
 
         // Waiting for provided selector
         node.status({
@@ -24,7 +15,16 @@ module.exports = function (RED) {
           shape: "dot",
           text: `Wait for ${selector}`,
         });
-        await msg.puppeteer.page.waitForSelector(selector);
+        
+        //Check if the selector could be found in an iframe
+        const mainFrame = msg.puppeteer.page.mainFrame();
+        const childFrames = mainFrame.childFrames();
+        if (childFrames.length === 0) {
+          await msg.puppeteer.page.waitForSelector(selector);
+        } else if(childFrames.length > 0) {
+          const result = await puppetHelpers.findElementInFrames(mainFrame, selector);
+          await result.frame.waitForSelector(selector)
+        }
 
         // Provided selector exists
         node.status({

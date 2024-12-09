@@ -21,6 +21,7 @@
     },
     paletteLabel: "Wait",
     oneditprepare: function () {
+     $("#node-input-name").val(this.name);
       $("#node-input-selector").typedInput({
         type: "str",
         types: ["str", "msg", "flow", "global"],
