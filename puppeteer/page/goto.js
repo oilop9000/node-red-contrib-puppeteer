@@ -19,7 +19,9 @@ module.exports = function (RED) {
         // Visiting URL
         node.status({ fill: "blue", shape: "dot", text: `Go to ${url}` });
         await msg.puppeteer.page.goto(url, nodeConfig);
-
+        // New: Saving the response
+        
+        msg.puppeteer.content = await msg.puppeteer.page.content();
         // URL visited
         node.status({ fill: "green", shape: "dot", text: url });
         // Sending the msg

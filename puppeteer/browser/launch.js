@@ -8,8 +8,10 @@ module.exports = function (RED) {
     nodeConfig.ignoreHTTPSErrors = true; // Setting the node's ignoreHttpsErrors property
     var node = this; // Referencing the current node
     puppeteer.use(stealth()); // TO-DO: Make optional. Use stealth.
-    var args = [`--remote-debugging-port=${nodeConfig.debugport}`,`--proxy-server=socks5://127.0.0.1:1080`];
- 
+    var args = [`--remote-debugging-port=${nodeConfig.debugport}`];
+    // Check if the proxy type is set
+    if(nodeConfig.proxyType != "") args.push(`--proxy-server=${nodeConfig.proxyType}://${nodeConfig.proxyServer}:${nodeConfig.proxyPort}`);
+    
     this.on("input", async function (msg, send, done) {
       try {
         node.status({ fill: "blue", shape: "dot", text: "Launching..." });
@@ -108,15 +110,6 @@ module.exports = function (RED) {
     this.on("close", function () {
       node.status({});
     });
-    oneditprepare: function oneditprepare() {
-      $("#node-input-timeout").val(nodeConfig.timeout);
-      $("#node-input-slowMo").val(nodeConfig.slowMo);
-      $("#node-input-headless").val(nodeConfig.headless);
-      $("#node-input-debugport").val(nodeConfig.debugport);
-      $("#node-input-devtools").val(nodeConfig.devtools);
-      $("#node-input-name").val(nodeConfig.name);
-      $("#node-input-executablePath").val(nodeConfig.executablePath);
-    }
   }
   RED.nodes.registerType("puppeteer-browser-launch", PuppeteerBrowserLaunch);
 };

@@ -1,13 +1,13 @@
 {
-  "name": "@digitalnodecom/node-red-contrib-puppeteer",
-  "version": "1.2.0",
-  "description": "NodeRED nodes to control a headless chrome with puppeteer",
+  "name": "@oilop9000/node-red-contrib-puppeteer",
+  "version": "1.2.1",
+  "description": "NodeRED nodes to control a headless chrome with puppeteer, added basic http authentication, and socks5 proxy support.",
   "main": "index.js",
   "scripts": {},
   "author": {
-    "name": "Riste Ristov",
-    "email": "ristov@riste.mk",
-    "url": "https://riste.mk"
+    "name": "Angel Sandoval",
+    "email": "oilop9000@gmail.com",
+    "url": "https://nodered.org"
   },
   "license": "MIT",
   "dependencies": {
@@ -21,11 +21,11 @@
     "puppeteer-extra-plugin-user-preferences": "^2.4.1"
   },
   "bugs": {
-    "url": "https://github.com/digitalnodecom/node-red-contrib-puppeteer/issues"
+    "url": "https://github.com/oilop9000/node-red-contrib-puppeteer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalnodecom/node-red-contrib-puppeteer"
+    "url": "https://github.com/oilop9000/node-red-contrib-puppeteer"
   },
   "keywords": [
     "chrome",
@@ -56,7 +56,9 @@
       "puppeteer-page-set-value": "puppeteer/page/set.js",
       "puppeteer-page-upload": "puppeteer/page/upload.js",
       "puppeteer-rename": "puppeteer/page/rename.js",
-      "puppeteer-page-httpauth": "puppeteer/page/auth.js"
+      "puppeteer-page-httpauth": "puppeteer/page/auth.js",
+      "puppeteer-page-waitForTimeout": "puppeteer/page/waitForTimeout.js",
+      "puppeteer-page-dialog": "puppeteer/page/dialog.js"
     }
   }
 }

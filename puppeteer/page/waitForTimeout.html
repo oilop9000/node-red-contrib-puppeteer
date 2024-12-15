@@ -1,0 +1,44 @@
+<script type="text/javascript">
+  RED.nodes.registerType("puppeteer-page-waitForTimeout", {
+    category: "Puppeteer",
+    color: "#cf6dfd",
+    defaults: {
+      name: { value: "" },
+      timeout: { value: 1000, required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "wait.svg",
+    label: function () {
+      return this.name || `Wait ${this.timeout} milliseconds`;
+    },
+    paletteLabel: "Wait Timeout",
+    oneditprepare: function () {
+      $("#node-input-name").val(this.name);
+      $("#node-input-timeout").val(this.timeout);
+    },
+  });
+</script>
+
+<script type="text/x-red" data-template-name="puppeteer-page-waitForTimeout">
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label>
+    <input type="number" id="node-input-timeout"></input>
+    <span >milliseconds</span>
+  </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node waits for the specified <code>timeout</code> milliseconds
+    </span>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="puppeteer-page-waitForTimeout">
+  <p>Wait for the specified timeout</p>
+  <h3>Details</h3>
+  <p>This node waits for the specified <code>timeout</code> milliseconds</p>
+</script>

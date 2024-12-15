@@ -11,6 +11,9 @@
       cookies: { value: "" },
       name: { value: "" },
       executablePath: { value: "" },
+      proxyType: { value: "" },
+      proxyServer: { value: "127.0.0.1" },
+      proxyPort: { value: "1080" },
     },
     inputs: 1,
     outputs: 1,
@@ -19,10 +22,41 @@
       return this.name || "Launch";
     },
     paletteLabel: "Launch",
+    oneditprepare: function () {
+      // Prepare selectbox proxyType
+      $("#node-input-proxyType").typedInput({
+        types: [
+          {
+            value: "proxyType",
+
+            options: [
+              { value: "", label: "None" },
+              { value: "socks5", label: "Socks5" },
+              { value: "http", label: "Http (not validated)" },
+            ],
+          },
+        ],
+      });
+      function toggleIProxyFields() {
+        const value = $("#node-input-proxyType").val(); // Valor actual del selector
+        if (value === "") {
+            $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", true);
+          } else {
+            $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", false);
+          
+        }
+    }
+      toggleIProxyFields();
+      $("#node-input-proxyType").on("change", toggleIProxyFields);
+      // // Allow dynamic re-size after init. appearance
+      // setTimeout(function () {
+      //   $("#node-props").css("width", "100%");
+      // }, 30);
+    },
   });
 </script>
 
-<script type="text/x-red" data-template-name="puppeteer-browser-launch">
+<script type="text/html" data-template-name="puppeteer-browser-launch">
   <div class="form-row">
       <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label>
       <input type="number" id="node-input-timeout" style="width:100px;" placeholder="30000" />
@@ -57,6 +91,18 @@
     <label for="node-input-executablePath"><i class="fa fa-tag"></i> Executable Path</label>
     <input type="text" id="node-input-executablePath" style="width:70%;" placeholder="Change this if you have a different chromium path..." />
   </div>
+  <div class="form-row">
+    <label for="node-input-proxyType"><i class="fa fa-box"></i> Proxy Type</label>
+    <input type="text" id="node-input-proxyType" style="width:70%;">
+  </div>
+  <div class="form-row">
+    <label for="node-input-proxyServer"><i class="fa fa-page"></i> Proxy Server</label>
+    <input type="text" id="node-input-proxyServer" style="width:70%;" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-proxyPort"><i class="fa fa-page"></i> Proxy Port</label>
+    <input type="text" id="node-input-proxyPort" style="width:70%;" />
+  </div>
   <div class="form-tips">
       <span data-i18n="[html]tip1">This node launches a chromium instance and sets cookies to it if specified. The cookies should be a list of cookie objects where each one has the following properties and they should be passed in as <code>msg.payload</code>, or if directly into the input field it should be a valid JSON list:
         <ul>
@@ -78,28 +124,51 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-browser-launch">
+<script type="text/html" data-help-name="puppeteer-browser-launch">
   <p>Launch Chrome browser</p>
   <h3>Inputs</h3>
   <dl class="message-properties">
-      <dt>Timeout<span class="property-type">number</span></dt>
-      <dd>Maximum time in milliseconds to wait for the browser instance to start. Defaults to <code>30000</code> (30 seconds). Pass <code>0</code> to disable timeout.</dd>
-      <dt>Slow Motion<span class="property-type">number</span></dt>
-      <dd>Slows down Puppeteer operations by the specified amount of milliseconds. Useful so that you can see what is going on.</dd>
-      <dt>Hide Chrome<span class="property-type">boolean</span></dt>
-      <dd>Whether to run browser in <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" rel="nofollow">headless mode</a>. Defaults to <code>false</code>, it will show Chrome when <code>devtools</code> option is <code>true</code>.</dd>
-      <dt>Debug Port<span class="property-type">number</span></dt>
-      <dd>Specify custom debugging port. It will connect to existing Chrome if port specified. Pass <code>0</code> to discover a random port. Defaults to <code>0</code>.</dd>
-      <dt>Show Devtools<span class="property-type">boolean</span></dt>
-      <dd>Whether to auto-open a DevTools panel for each tab. If this option is <code>true</code>, the <code>Hide Chrome</code> option will be set <code>false</code>.</dd>
+    <dt>Timeout<span class="property-type">number</span></dt>
+    <dd>
+      Maximum time in milliseconds to wait for the browser instance to start.
+      Defaults to <code>30000</code> (30 seconds). Pass <code>0</code> to
+      disable timeout.
+    </dd>
+    <dt>Slow Motion<span class="property-type">number</span></dt>
+    <dd>
+      Slows down Puppeteer operations by the specified amount of milliseconds.
+      Useful so that you can see what is going on.
+    </dd>
+    <dt>Hide Chrome<span class="property-type">boolean</span></dt>
+    <dd>
+      Whether to run browser in
+      <a
+        href="https://developers.google.com/web/updates/2017/04/headless-chrome"
+        rel="nofollow"
+        >headless mode</a
+      >. Defaults to <code>false</code>, it will show Chrome when
+      <code>devtools</code> option is <code>true</code>.
+    </dd>
+    <dt>Debug Port<span class="property-type">number</span></dt>
+    <dd>
+      Specify custom debugging port. It will connect to existing Chrome if port
+      specified. Pass <code>0</code> to discover a random port. Defaults to
+      <code>0</code>.
+    </dd>
+    <dt>Show Devtools<span class="property-type">boolean</span></dt>
+    <dd>
+      Whether to auto-open a DevTools panel for each tab. If this option is
+      <code>true</code>, the <code>Hide Chrome</code> option will be set
+      <code>false</code>.
+    </dd>
   </dl>
   <h3>Outputs</h3>
   <dl class="message-properties">
-      <dt>msg.puppeteer.browser<span class="property-type">object</span></dt>
-      <dd>The puppeteer browser object</dd>
-      <dt>msg.puppeteer.page<span class="property-type">object</span></dt>
-      <dd>The puppeteer page object</dd>
+    <dt>msg.puppeteer.browser<span class="property-type">object</span></dt>
+    <dd>The puppeteer browser object</dd>
+    <dt>msg.puppeteer.page<span class="property-type">object</span></dt>
+    <dd>The puppeteer page object</dd>
   </dl>
   <h3>Details</h3>
-      <p>Must launch Chrome browser before run any puppeteer actions</p>
+  <p>Must launch Chrome browser before run any puppeteer actions</p>
 </script>
