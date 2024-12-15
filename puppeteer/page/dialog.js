@@ -1,6 +1,6 @@
 module.exports = function (RED) {
 
-  function PuppeteerHttpAuth(nodeConfig) {
+  function PuppeteerDialog(nodeConfig) {
     RED.nodes.createNode(this, nodeConfig);
     var node = this; // Referencing the current node
     // Get Credentials
@@ -46,16 +46,16 @@ module.exports = function (RED) {
     this.on("close", function () {
       node.status({});
     });
-    oneditprepare: function oneditprepare() {
-      $("#node-input-name").val(nodeConfig.name);
-      $("#node-input-username").val(nodeConfig.username);
-      $("#node-input-password").val(nodeConfig.password);
-    }
+    // oneditprepare: function oneditprepare() {
+    //   $("#node-input-name").val(nodeConfig.name);
+    //   $("#node-input-username").val(nodeConfig.username);
+    //   $("#node-input-password").val(nodeConfig.password);
+    // }
   }
   setTimeout(() => {
     
   }, 3000);
-  RED.nodes.registerType("puppeteer-page-httpauth", PuppeteerHttpAuth, {credentials : {
+  RED.nodes.registerType("puppeteer-page-dialog", PuppeteerDialog, {credentials : {
     username: {type:"text"},
     password: {type:"password"}
   }});

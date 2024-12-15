@@ -1,0 +1,80 @@
+<script type="text/javascript">
+  RED.nodes.registerType("puppeteer-page-dialog", {
+    category: "Puppeteer",
+    color: "#fe5252",
+    credentials: {
+      username: { type: "text" },
+      password: { type: "password" },
+    },
+    defaults: {
+      username: { value: "", required: true },
+      password: { value: "", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "set.svg",
+    label: function () {
+      let label = this.name == "" ? "Page Dialog Events" : this.name;
+      return label || "Page Dialog Events";
+    },
+    paletteLabel: "Page Dialog Events",
+    oneditprepare: $("#node-input-answerType").typedInput({
+      types: [
+        {
+          value: "answerType",
+          options: [
+            { value: "dismiss", label: "Dismiss" },
+            { value: "accept", label: "Accept (Prompt text is the answer)" },
+            { value: "cherry", label: "Cherry" },
+          ],
+        },
+      ],
+    }),
+  });
+</script>
+
+<script type="text/html" data-template-name="puppeteer-page-dialog">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input
+      type="text"
+      id="node-input-name"
+      style="width:70%;"
+      placeholder="Name"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-input-answerType"
+      ><i class="fa fa-lock"></i> Answer Type</label
+    >
+    <input type="text" id="node-input-answerType" style="width:70%;" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-promptText"><i class="fa fa-user"></i> Prompt Text</label>
+    <input
+      type="text"
+      id="node-input-promptText"
+      style="width:70%;"
+      placeholder="Prompt text (aka dialog answer) Optional"
+    />
+  </div>
+  <div class="form-tips">
+    <span data-i18n="[html]tip1">
+      This node adds authentication to the (<code>msg.puppeteer.page</code>)
+      object, using the configured username and password on this node. You have
+      to use it before a url node.
+    </span>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="puppeteer-page-dialog">
+  <p>
+    Adds authentication to the (<code>msg.puppeteer.page</code>) object, using
+    the configured username and password on this node.
+  </p>
+  <h3>Details</h3>
+  <p>
+    This node adds authentication to the (<code>msg.puppeteer.page</code>)
+    object, using the configured username and password on this node.
+  </p>
+</script>
