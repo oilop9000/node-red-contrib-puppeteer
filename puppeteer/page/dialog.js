@@ -3,28 +3,17 @@ module.exports = function (RED) {
   function PuppeteerDialog(nodeConfig) {
     RED.nodes.createNode(this, nodeConfig);
     var node = this; // Referencing the current node
-    // Get Credentials
-    var credentials = this.credentials; 
     this.on("input", async function (msg, send, done) {
       try {
-        // Get Authentication parameters
-        var username;
-        var password;
-        if (msg._credentials && msg._credentials.user && msg._credentials.password) {
-          username = msg._credentials.user;
-          password = msg._credentials.password; 
-        }else {
-          username = credentials.username;
-          password = credentials.password;
-        }
-        if (!username || !password) {
-          throw new Error("Missing username or password");
-        }
+        
         // Authenticate
-        node.status({ fill: "blue", shape: "dot", text: `Authenticating ${username}...` });
-        await msg.puppeteer.page.authenticate({username, password});
+        node.status({ fill: "blue", shape: "dot", text: `Adding dialog listener...` });
+        msg.puppeteer.page.on("dialog", async (dialog) => {
+          nodeConfig.anwerType == "accept" && nodeConfig.promptText ? await dialog.accept(nodeConfig.promptText) : await dialog.accept();
+        });
         // Send the updated msg
         send(msg);
+        node.status({ fill: "green", shape: "dot", text: `Dialog listener added` });
       } catch (e) {
         // Update the status
         node.status({ fill: "red", shape: "dot", text: e.message });
@@ -46,17 +35,9 @@ module.exports = function (RED) {
     this.on("close", function () {
       node.status({});
     });
-    // oneditprepare: function oneditprepare() {
-    //   $("#node-input-name").val(nodeConfig.name);
-    //   $("#node-input-username").val(nodeConfig.username);
-    //   $("#node-input-password").val(nodeConfig.password);
-    // }
   }
   setTimeout(() => {
     
   }, 3000);
-  RED.nodes.registerType("puppeteer-page-dialog", PuppeteerDialog, {credentials : {
-    username: {type:"text"},
-    password: {type:"password"}
-  }});
+  RED.nodes.registerType("puppeteer-page-dialog", PuppeteerDialog);
 };

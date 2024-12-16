@@ -40,18 +40,14 @@
       function toggleIProxyFields() {
         const value = $("#node-input-proxyType").val(); // Valor actual del selector
         if (value === "") {
-            $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", true);
-          } else {
-            $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", false);
-          
+          $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", true);
+        } else {
+          $("#node-input-proxyServer, #node-input-proxyPort").prop("disabled", false);
+
         }
-    }
+      }
       toggleIProxyFields();
       $("#node-input-proxyType").on("change", toggleIProxyFields);
-      // // Allow dynamic re-size after init. appearance
-      // setTimeout(function () {
-      //   $("#node-props").css("width", "100%");
-      // }, 30);
     },
   });
 </script>
