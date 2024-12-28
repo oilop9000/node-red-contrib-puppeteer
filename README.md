@@ -1,9 +1,13 @@
 # @oilop9000/node-red-contrib-puppeteer
+<img src="https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png" alt="drawing" height="60"/>
 
-<img src="https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png" alt="drawing" height="225"/>
+>These node-red nodes expose puppeteer's API used for controlling Chrome/Chromium over the <a href='https://chromedevtools.github.io/devtools-protocol/'>DevTools Protocol</a>
 
-### These node-red nodes expose puppeteer's API used for controlling Chrome/Chromium over the <a href='https://chromedevtools.github.io/devtools-protocol/'>DevTools Protocol</a>
+# Browser Class
 
+## Node Launch
+
+### Inputs
 
 
 Group | Node Name | Detailed information
