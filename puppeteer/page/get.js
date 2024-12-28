@@ -1,3 +1,4 @@
+const puppetHelpers = require("../../lib/helpers");
 module.exports = function (RED) {
   function PuppeteerPageGetValue(nodeConfig) {
     RED.nodes.createNode(this, nodeConfig);
@@ -6,20 +7,7 @@ module.exports = function (RED) {
     this.on("input", async function (msg, send, done) {
       try {
         // Parsing the selector from string input or from msg object
-        let selector =
-          nodeConfig.selectortype != "str"
-            ? eval(nodeConfig.selectortype + "." + nodeConfig.selector)
-            : nodeConfig.selector;
-        // If the type of selector is set to flow or global, it needs to be parsed differently
-        if (
-          nodeConfig.selectortype == "flow" ||
-          nodeConfig.selectortype == "global"
-        ) {
-          // Parsing the selector
-          selector = this.context()[nodeConfig.selectortype].get(
-            nodeConfig.selectortype
-          );
-        }
+        let selector = puppetHelpers.getNoderedSelector(nodeConfig)
 
         // Parsing the property from string input or from msg object
         let property =

@@ -1,3 +1,4 @@
+const puppetHelpers = require("../../lib/helpers");
 module.exports = function (RED) {
   function PuppeteerPageClick(nodeConfig) {
     RED.nodes.createNode(this, nodeConfig);
@@ -8,20 +9,7 @@ module.exports = function (RED) {
     this.on("input", async function (msg, send, done) {
       try {
         // Parsing the selector from string input or from msg object
-        let selector =
-          nodeConfig.selectortype != "str"
-            ? eval(nodeConfig.selectortype + "." + nodeConfig.selector)
-            : nodeConfig.selector;
-        // If the type of selector is set to flow or global, it needs to be parsed differently
-        if (
-          nodeConfig.selectortype == "flow" ||
-          nodeConfig.selectortype == "global"
-        ) {
-          // Parsing the selector
-          selector = this.context()[nodeConfig.selectortype].get(
-            nodeConfig.selectortype
-          );
-        }
+        let selector = puppetHelpers.getNoderedSelector(nodeConfig)
 
         // Waiting for the specified selector
         node.status({
@@ -29,11 +17,21 @@ module.exports = function (RED) {
           shape: "ring",
           text: `Wait for ${selector}`,
         });
-        await msg.puppeteer.page.waitForSelector(selector);
+        
+        //Check if the selector could be found in an iframe
+        const mainFrame = msg.puppeteer.page.mainFrame();
+        const childFrames = mainFrame.childFrames();
+        if (childFrames.length === 0) {
+          await msg.puppeteer.page.waitForSelector(selector);
+          await msg.puppeteer.page.click(selector, nodeConfig);
+        } else if(childFrames.length > 0) {
+          const result = await puppetHelpers.findElementInFrames(mainFrame, selector);
+          await result.frame.click(selector, nodeConfig)
+        }
+        // await msg.puppeteer.page.click(selector, nodeConfig);
 
         // Clicking on the specified selector
-        node.status({ fill: "blue", shape: "dot", text: `Click ${selector}` });
-        await msg.puppeteer.page.click(selector, nodeConfig);
+        node.status({ fill: "blue", shape: "dot", text: `Clicked ${selector}` });
 
         // Selector clicked sucessfully
         node.status({

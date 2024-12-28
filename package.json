@@ -1,6 +1,6 @@
 {
   "name": "@oilop9000/node-red-contrib-puppeteer",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NodeRED nodes to control a headless chrome with puppeteer, added basic http authentication, and socks5 proxy support.",
   "main": "index.js",
   "scripts": {},

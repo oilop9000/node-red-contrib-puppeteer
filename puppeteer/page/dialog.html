@@ -62,6 +62,16 @@
 
 <script type="text/html" data-help-name="puppeteer-page-dialog">
   <h3>Details</h3>
+  <dl class="message-properties">
+    <dt>Answer Type<span class="property-type">string</span></dt>
+    <dd>
+      The type of response to give for dialog can be to accept or dismiss (default).
+    </dd>
+    <dt>Prompt Text<span class="property-type">string</span></dt>
+    <dd>
+      The text that will be used to respond to the dialog box, in case of choosing the option to accept (optional).
+    </dd>
+  </dl>
   <p>
     This node uses puppeteer's logic to handle dialog events handling, more information can be found here: <link href="https://github.com/puppeteer/puppeteer/blob/v13.7.0/docs/api.md#class-dialog" target="_blank">https://github.com/puppeteer/puppeteer/blob/v13.7.0/docs/api.md#class-dialog</link>
   </p>

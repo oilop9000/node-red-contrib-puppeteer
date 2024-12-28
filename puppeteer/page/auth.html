@@ -21,7 +21,7 @@
   });
 </script>
 
-<script type="text/x-red" data-template-name="puppeteer-page-httpauth">
+<script type="text/html" data-template-name="puppeteer-page-httpauth">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
@@ -41,8 +41,18 @@
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="puppeteer-page-httpauth">
+<script type="text/html" data-help-name="puppeteer-page-httpauth">
   <p>Adds authentication to the (<code>msg.puppeteer.page</code>) object, using the configured username and password on this node.</p>
-  <h3>Details</h3>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>User<span class="property-type">string</span></dt>
+    <dd>
+      The name of the user that will be used for authentication.
+    </dd>
+    <dt>Password<span class="property-type">string</span></dt>
+    <dd>
+      The password to use for authentication.
+    </dd>
+  </dl>
   <p>This node adds authentication to the (<code>msg.puppeteer.page</code>) object, using the configured username and password on this node.</p>
 </script>

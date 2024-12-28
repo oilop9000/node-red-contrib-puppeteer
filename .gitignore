@@ -1,4 +1,3 @@
 node_modules
-.vscode/launch.json
-.vscode/extensions.json
-node-red-contrib-puppeteer.code-workspace
+.vscode/*
+*.code-workspace
